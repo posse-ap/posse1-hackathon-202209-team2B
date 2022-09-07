@@ -1,17 +1,24 @@
 <?php
 require('dbconnect.php');
 
+
 session_start();
+
 // セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: auth/login");
-    exit;
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+  header("location: auth/login");
+  exit;
 }
 
-$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id');
-$events = $stmt->fetchAll();
 
-function get_day_of_week ($w) {
+
+// $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id where end_at >= now()  GROUP BY events.id');
+// $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = ?');
+// $events = $stmt->fetchAll();
+
+
+function get_day_of_week($w)
+{
   $day_of_week_list = ['日', '月', '火', '水', '木', '金', '土'];
   return $day_of_week_list["$w"];
 }
@@ -44,21 +51,55 @@ function get_day_of_week ($w) {
 
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
-      <!-- 
+
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+          <form action="" method="post">
+            <!-- <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a> -->
+            <input type="submit" value="全て" name="all" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">
+            <!-- <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a> -->
+            <input type="submit" value="参加" name="entry" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">
+            <!-- <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a> -->
+            <input type="submit" value="不参加" name="not_entry" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">
+            <!-- <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
+            <input type="submit" value="未回答" name="unanswered" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">
         </div>
+        </form>
       </div>
-      -->
+
       <div id="events-list">
         <div class="flex justify-between items-center mb-3">
           <h2 class="text-sm font-bold">一覧</h2>
         </div>
+        <?php
+
+
+        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND status = :status');
+
+        if (isset($_POST["all"])) {
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id');
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+        } else {
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if (isset($_POST["entry"])) {
+            $status = 1;
+            $stmt->bindValue(':status', $status);
+          } elseif (isset($_POST["not_entry"])) {
+            $status = 2;
+            $stmt->bindValue(':status', $status);
+          } elseif (isset($_POST["unanswered"])) {
+            $status = 0;
+            $stmt->bindValue(':status', $status);
+          } else {
+          }
+        }
+
+        $stmt->execute();
+        $events = $stmt->fetchAll();
+        ?>
 
         <?php foreach ($events as $event) : ?>
           <?php
@@ -66,6 +107,8 @@ function get_day_of_week ($w) {
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
           ?>
+
+
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
@@ -77,7 +120,7 @@ function get_day_of_week ($w) {
             <div class="flex flex-col justify-between text-right">
               <div>
                 <?php if ($event['id'] % 3 === 1) : ?>
-                  <!--
+                  <!-- 
                   <p class="text-sm font-bold text-yellow-400">未回答</p>
                   <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
                   -->
