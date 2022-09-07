@@ -41,9 +41,9 @@ INSERT INTO users SET name='石川朝香', email='asaka@posse.com', password=SHA
 INSERT INTO users SET name='尾関なな海', email='nanami@posse.com', password=SHA("minn");
 
 INSERT INTO events SET name='縦モク', start_at='2022/09/10 21:00', end_at='2022/09/10 23:00', event_detail='いっしょに学ぼう';
-INSERT INTO events SET name='横モク', start_at='2021/08/02 21:00', end_at='2021/08/02 23:00', event_detail='いっしょに開発しよう';
-INSERT INTO events SET name='スペモク', start_at='2021/08/03 20:00', end_at='2021/08/03 22:00', event_detail='Mentorさんと学ぼう';
-INSERT INTO events SET name='縦モク', start_at='2021/08/08 21:00', end_at='2021/08/08 23:00', event_detail='先輩に聞こう';
+INSERT INTO events SET name='横モク', start_at='2022/10/02 21:00', end_at='2022/10/02 23:00', event_detail='いっしょに開発しよう';
+INSERT INTO events SET name='スペモク', start_at='2022/11/03 20:00', end_at='2022/11/03 22:00', event_detail='Mentorさんと学ぼう';
+INSERT INTO events SET name='スペシャル縦モク', start_at='2022/09/18 21:00', end_at='2022/09/18 23:00', event_detail='先輩に聞こう';
 INSERT INTO events SET name='横モク', start_at='2021/08/09 21:00', end_at='2021/08/09 23:00', event_detail='課題進めよう';
 INSERT INTO events SET name='スペモク', start_at='2021/08/10 20:00', end_at='2021/08/10 22:00', event_detail='スーさんとお友達になろう';
 INSERT INTO events SET name='縦モク', start_at='2021/08/15 21:00', end_at='2021/08/15 23:00', event_detail='先輩と仲良くなろう';
