@@ -42,7 +42,7 @@ function get_day_of_week($w)
         <img src="img/header-logo.png" alt="" class="h-full">
       </div>
       <div>
-        <a href="./admin/event_registration.php" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理者画面</a>
+        <a href="./admin/index.php" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理者画面</a>
       </div>
     </div>
   </header>
