@@ -45,12 +45,12 @@ if(!empty($_POST['name'])) {
     </div>
     <div class="header_title">
       <!-- 後に変更！！！！！！！！！！！！！！！！！！ -->
-      <p><a href="event_registration.html">イベント登録</a></p>
+      <p><a href="./event_registration.php">イベント登録</a></p>
     </div>
-    <!-- <div class="header_title"> -->
+    <div class="header_title">
     <!-- 後に変更！！！！！！！！！！！！！！！！！！ -->
-    <!-- <p><a href="event_registration.html">イベント一覧</a></p>
-    </div> -->
+    <p><a href="./event_list.php">イベント一覧</a></p>
+    </div>
   </header>
   <main>
   <div>
