@@ -1,3 +1,35 @@
+<?php
+session_start();
+
+if(!empty($_POST['name'])) {
+  try {
+
+    $stmt = $db->prepare(
+      'INSERT INTO events
+        (name, start_at, end_at)
+        VALUES
+        (:name, :start_at, :end_at)'
+      );
+  
+    $name = $_POST['name'];
+    $start_at = $_POST['start_at'];
+    $end_at = $_POST['end_at'];
+    
+    $param = array(
+      ':name' => $name,
+      ':start_at' => $start_at,
+      ':end_at' => $end_at,
+    );
+  
+    $stmt->execute($param);
+  }catch (PDOException $e) {
+    echo 'データベースにアクセスできません！'.$e->getMessage();
+}
+  
+  } 
+  
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -27,19 +59,18 @@
   <div>
     <h1>イベント登録</h1>
   </div>
-  <!-- get, post???????? -->
-  <form action="" method="get" class="registration_form">
+  <form action="./event_registration.php" method="post" class="registration_form">
     <div>
-      <p>イベント名<br><input type="text"></p>
+      <p>イベント名<br><input type="text" name="name"></p>
     </div>
     <div>
-      <p>開始時間<br><input type="datetime-local"></p>
+      <p>開始時間<br><input type="datetime-local" name="start_at"></p>
     </div>
     <div>
-      <p>終了時間<br><input type="datetime-local"></p>
+      <p>終了時間<br><input type="datetime-local" name="end_at"></p>
     </div>
     <div>
-      <input type="submit" value="送信">
+    <button type="submit" name="button">登録する</button>
     </div>
   </form>
 

@@ -1,8 +1,7 @@
 <?php
 require('../dbconnect.php');
-// ・毎日やる
-$i = 0;
-while (true) {
+
+
   try {
     $stmt = $db->prepare('SELECT id, name, start_at, end_at from events');
     $stmt->execute();
@@ -57,10 +56,4 @@ while (true) {
     exit();
   }
 
-  sleep(5);
-  $i = $i + 1;
-  if ($i == 3) {
-    break;
-  }
-}
 // ・全部のイベントに対してやる
