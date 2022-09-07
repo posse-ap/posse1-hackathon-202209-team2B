@@ -69,49 +69,34 @@ function get_day_of_week($w)
         <div class="flex justify-between items-center mb-3">
           <h2 class="text-sm font-bold">一覧</h2>
         </div>
-          <?php
+        <?php
 
-        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE status = :status');
-        
-        if(isset($_POST["all"])){
-            $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id');
+
+        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND status = :status');
+
+        if (isset($_POST["all"])) {
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id');
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+        } else {
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if (isset($_POST["entry"])) {
+            $status = 1;
+            $stmt->bindValue(':status', $status);
+          } elseif (isset($_POST["not_entry"])) {
+            $status = 2;
+            $stmt->bindValue(':status', $status);
+          } elseif (isset($_POST["unanswered"])) {
+            $status = 0;
+            $stmt->bindValue(':status', $status);
+          } else {
+          }
         }
-        else{
-            if (isset($_POST["entry"])) {
-              $status = 1;
-              $stmt->bindValue(':status', $status);
-            } elseif (isset($_POST["not_entry"])) {
-              $status = 2;
-              $stmt->bindValue(':status', $status);
-            } elseif (isset($_POST["unanswered"])) {
-              $status = 0;
-              $stmt->bindValue(':status', $status);
-            }
-            // 全ての場合、statusに記入していないとAND以降がないものとして扱われる？
-            else {
-            }
-        }
-        
-        // if(isset($_POST["entry"])){
-        //   $status=1;
-        //   $stmt->bindValue(':status', $status);
-        // }
-        // elseif(isset($_POST["not_entry"])){
-        //     $status = 2;
-        //     $stmt->bindValue(':status', $status);
-        // } 
-        // elseif (isset($_POST["unanswered"])) {
-        //     $status = 0;
-        //     $stmt->bindValue(':status', $status);
-        // } 
-        // // 全ての場合、statusに記入していないとAND以降がないものとして扱われる？
-        // else {
-        // }
+
         $stmt->execute();
         $events = $stmt->fetchAll();
-        
-        echo $events;
-          ?>
+        ?>
 
         <?php foreach ($events as $event) : ?>
           <?php
