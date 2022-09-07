@@ -3,7 +3,7 @@ require('../dbconnect.php');
 
 
   try {
-    $stmt = $db->prepare('SELECT id, name, start_at, end_at from events');
+    $stmt = $db->prepare('SELECT id, name, start_at, end_at, event_detail from events');
     $stmt->execute();
     $events = $stmt->fetchAll(pdo::FETCH_ASSOC);
     // print_r($events);
@@ -15,6 +15,7 @@ require('../dbconnect.php');
         'date' => date("Y年m月d日", $start_date),
         'start_at' => date("H:i", $start_date),
         'end_at' => date("H:i", $end_date),
+        'event_detail' => $event['event_detail'],
       ];
       $event_date = substr($event['start_at'], 0, 10);
       $three_days_after = date("Y-m-d", strtotime("+3 day"));
@@ -39,9 +40,10 @@ require('../dbconnect.php');
           $name = $participant['name'];
           $date = $event_date;
           $event = $array['name'];
+          $event_detail = $array['event_detail'];
           $body = <<<EOT
           {$name}さん
-          ${date}に${event}を開催します。
+          ${date}に${event}:${event_detail}を開催します。
           参加／不参加の回答をお願いします。
           http://localhost/
         EOT;
