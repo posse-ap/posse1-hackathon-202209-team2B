@@ -80,8 +80,7 @@ require('../dbconnect.php');
       
       $three_days_after = date("Y-m-d", strtotime("+1 day"));
       if ($event_date == $three_days_after) {
-        // $stmt = $db->prepare('SELECT users.name, users.email, event_attendance.status FROM event_attendance left join users on event_attendance.user_id = users.id right join events on event_attendance.event_id = events.id where status = 1 AND events.id = :event_id');
-        $stmt = $db->prepare('SELECT users.name, users.email, event_attendance.status FROM event_attendance left join users on event_attendance.user_id = users.id right join events on event_attendance.event_id = events.id where events.id = :event_id');
+        $stmt = $db->prepare('SELECT users.name, users.email, event_attendance.status FROM event_attendance left join users on event_attendance.user_id = users.id right join events on event_attendance.event_id = events.id where status = 1 AND events.id = :event_id');
         $stmt->bindValue(':event_id', $array['id']);
         // 特定のイベントに対して、ユーザーを取得している
         $stmt->execute();
