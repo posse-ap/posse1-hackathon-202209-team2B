@@ -32,8 +32,6 @@ async function openModal(eventId, userId) {
       "/api/getModalInfo.php?eventId=" + eventId + "&userId=" + userId;
     const res = await fetch(url);
     const event = await res.json();
-    console.log(event);
-    console.log(event["name"]);
     let modalHTML = `
     <h2 class="text-md font-bold mb-3">${event.name}</h2>
       <p class="text-sm">${event.date}（${event.day_of_week}）</p>
@@ -58,9 +56,9 @@ async function openModal(eventId, userId) {
             <p class="text-xs text-yellow-400">期限 ${event.deadline}</p>
           </div>
           <div class="flex mt-5">
-            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
-            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加しない</button>
-          </div>
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 1)">参加する</button>
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 2)">参加しない</button>
+        </div>
         `;
         break;
       case 1:
@@ -69,8 +67,8 @@ async function openModal(eventId, userId) {
             <p class="text-xl font-bold text-green-300">参加</p>
           </div>
           <div class="flex mt-5">
-          <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
-          <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加しない</button>
+          <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加する</button>
+          <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 2)">参加しない</button>
         </div>
         `;
         break;
@@ -80,8 +78,8 @@ async function openModal(eventId, userId) {
             <p class="text-xl font-bold text-gray-400">不参加</p>
           </div>
           <div class="flex mt-5">
-          <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加する</button>
-          <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加しない</button>
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 1)">参加する</button>
+            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加しない</button>
         </div>
         `;
         break;
@@ -104,10 +102,12 @@ function toggleModal() {
   body.classList.toggle("modal-active");
 }
 
-async function participateEvent(eventId) {
+async function participateEvent(eventId, userId, status) {
   try {
     let formData = new FormData();
     formData.append("eventId", eventId);
+    formData.append("userId", userId);
+    formData.append("status", status);
     const url = "/api/postEventAttendance.php";
     await fetch(url, {
       method: "POST",
