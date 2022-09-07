@@ -9,23 +9,21 @@ if (isset($_GET['id'])) {
 }
 
 if (isset($_POST['name'])) {
-  $id = $event[0]['id'];
-
   try {
+      $id = $_POST['id'];
       // 送信された値を取得
       $name = $_POST['name'];
-      $start_at = $_POST['start_at'];
-      $end_at = $_POST['end_at'];
+      $start_at = str_replace("T", " ", $_POST['start_at']) .":00";
+      $end_at = str_replace("T", " ", $_POST['end_at']) .":00";
       $event_detail = $_POST['event_detail'];
 
       echo $event_detail;
 
-      $sql = 'UPDATE events SET
-      name = :name, start_at = :start_at, end_at = :end_at, event_detail = :event_detail WHERE id = :id';
+      $sql = 'UPDATE events SET name = :name, start_at = :start_at, end_at = :end_at, event_detail = :event_detail WHERE id = :id';
       $stmt = $db->prepare($sql);
-      $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+      $stmt->bindValue(":id", $id);
 
-      $stmt->bindValue(":name",  $name, PDO::PARAM_STR);
+      $stmt->bindValue(":name", $name);
       // 
       $stmt->bindValue(":start_at",  $start_at);
       // 
@@ -111,6 +109,7 @@ if (isset($_POST['name'])) {
       <div>
         <button name="update" type="submit">変更</button>
       </div>
+      <input name="id" type="hidden" value="<?php echo $event[0]['id'] ?>">
       </form>
 </main>
 </body>
