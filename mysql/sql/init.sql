@@ -44,16 +44,17 @@ INSERT INTO events SET name='横モク', start_at='2021/08/02 21:00', end_at='20
 INSERT INTO events SET name='スペモク', start_at='2021/08/03 20:00', end_at='2021/08/03 22:00';
 INSERT INTO events SET name='縦モク', start_at='2021/08/08 21:00', end_at='2021/08/08 23:00';
 INSERT INTO events SET name='横モク', start_at='2021/08/09 21:00', end_at='2021/08/09 23:00';
-INSERT INTO events SET name='スペモク', start_at='2021/08/10 20:00', end_at='2021/08/10 22:00';
+INSERT INTO events SET name='スペモク', start_at='2021/08/10
+ 20:00', end_at='2021/08/10 22:00';
 INSERT INTO events SET name='縦モク', start_at='2021/08/15 21:00', end_at='2021/08/15 23:00';
 INSERT INTO events SET name='横モク', start_at='2021/08/16 21:00', end_at='2021/08/16 23:00';
 INSERT INTO events SET name='スペモク', start_at='2021/08/17 20:00', end_at='2021/08/17 22:00';
 INSERT INTO events SET name='縦モク', start_at='2021/08/22 21:00', end_at='2021/08/22 23:00';
 INSERT INTO events SET name='横モク', start_at='2021/08/23 21:00', end_at='2021/08/23 23:00';
 INSERT INTO events SET name='スペモク', start_at='2021/08/24 20:00', end_at='2021/08/24 22:00';
-INSERT INTO events SET name='遊び', start_at='2021/09/22 18:00', end_at='2021/09/22 22:00';
-INSERT INTO events SET name='ハッカソン', start_at='2021/09/03 10:00', end_at='2021/09/03 22:00';
-INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/09/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/10/22 18:00', end_at='2022/10/22 22:00';
+INSERT INTO events SET name='ハッカソン', start_at='2022/09/13 10:00', end_at='2022/09/13 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/09/09 18:20', end_at='2022/09/09 23:12';
 
 INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=2, status=1;
