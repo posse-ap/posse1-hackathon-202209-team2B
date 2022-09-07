@@ -61,7 +61,7 @@ INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/
 
 INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=2, status=2;
-INSERT INTO event_attendance SET event_id=1, user_id=3, status=1;
+INSERT INTO event_attendance SET event_id=4, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=3, user_id=2, status=0;
 INSERT INTO event_attendance SET event_id=2, user_id=2, status=0;
