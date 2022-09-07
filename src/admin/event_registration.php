@@ -1,6 +1,13 @@
 <?php
 session_start();
 require('../dbconnect.php');
+
+if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10)) {
+  session_unset(); 
+  session_destroy(); 
+  header("location: ../auth/login");
+}
+
 // セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: ../auth/login");
