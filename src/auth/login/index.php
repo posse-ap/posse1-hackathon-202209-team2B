@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //ユーザー情報があれば変数に格納
   if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     //パスワードがあっているか確認
-    if ($datas['password'] === $row['password']) {
+    if (sha1(($datas['password']) === $row['password'])) {
 
       //セッション変数にログイン情報を格納
       $_SESSION["loggedin"] = true;
