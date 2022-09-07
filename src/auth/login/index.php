@@ -1,13 +1,14 @@
 <?php
-require "../../dbconnect.php";
+require ("../../dbconnect.php");
 
 session_start();
 
+
 // セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
-if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-  header("location: index.php");
-  exit;
-}
+// if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+//   header("location: ../../index.php");
+//   exit;
+// }
 
 //POSTされてきたデータを格納する変数の定義と初期化
 $datas = [
@@ -94,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="submit" value="ログイン" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
       <div class="text-center text-xs text-gray-400 mt-6">
-        <a href="/">パスワードを忘れた方はこちら</a>
+        <a href="./forget_password.php">パスワードを忘れた方はこちら</a>
       </div>
     </div>
   </main>

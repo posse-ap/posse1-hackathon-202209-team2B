@@ -1,0 +1,43 @@
+html{
+  font-size: 62.5%;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+a:hover{
+  opacity: 0.4;
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header_logo img {
+  width: 40%;
+}
+
+.header_logo {
+  width: 60%;
+}
+.header_title p{
+  font-size: 1.6rem;
+}
+
+main {
+  background-color: rgb(246, 244, 244);
+  width: 94%;
+  margin: 0 auto;
+}
+h1{
+  font-size: 4rem;
+}
+
+.registration_form p{
+font-size: 2rem;
+}
+.registration_form div{
+  margin-bottom: 40px;
+}
