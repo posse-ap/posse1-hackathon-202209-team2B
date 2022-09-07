@@ -20,9 +20,9 @@ while (true) {
       $event_date = substr($event['start_at'], 0, 10);
       $three_days_after = date("Y-m-d", strtotime("+3 day"));
       if ($event_date == $three_days_after) {
-        $stmt = $db->prepare('SELECT name, email FROM users LEFT JOIN event_attendance ON users.id = event_attendance.user_id WHERE event_id = ?');
+        $stmt = $db->prepare('SELECT name, email FROM users');
         // 特定のイベントに対して、ユーザーを取得している
-        $stmt->execute(array($event['id']));
+        $stmt->execute();
         // ゲットしてきたイベントIDを指定
         $participants = $stmt->fetchAll(pdo::FETCH_ASSOC);
         // データの取得 
