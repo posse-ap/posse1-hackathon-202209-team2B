@@ -3,7 +3,7 @@ require('../../dbconnect.php');
 
 $inputted_email = $_POST['inputted_email'];
 
-$stmt = $db->prepare('SELECT name, email FROM users WHERE email = :inputted_email');
+$stmt = $db->prepare('SELECT id, name, email FROM users WHERE email = :inputted_email');
 $stmt->bindValue(':inputted_email', $inputted_email);
 $stmt->execute();
 $address = $stmt->fetch(pdo::FETCH_ASSOC);
@@ -15,6 +15,7 @@ if(isset($_POST['inputted_email'])) {
     mb_internal_encoding('UTF-8');
  
     $to = $address['email'];
+    $id = $address['id'];
     $subject = "パスワードリセット";
     $body = "本文";
     $headers = ["From" => "system@posse-ap.com", "Content-Type" => "text/plain; charset=UTF-8", "Content-Transfer-Encoding" => "8bit"];
@@ -23,7 +24,7 @@ if(isset($_POST['inputted_email'])) {
     $body = <<<EOT
     {$name}さん
     以下のリンクからパスワードリセットを行ってください。
-    http://localhost/auth/login/update_password.php
+    http://localhost/auth/login/update_password.php?id={$id}
   EOT;
  
     mb_send_mail($to, $subject, $body, $headers);
