@@ -5,23 +5,24 @@ require('../dbconnect.php');
 if(!empty($_POST['name'])) {
   try {
 
-    $stmt = $db->prepare('INSERT INTO events (name, start_at, end_at) VALUES (:name, :start_at, :end_at)');
+    $stmt = $db->prepare('INSERT INTO events (name, start_at, end_at, event_detail) VALUES (:name, :start_at, :end_at, :event_detail)');
   
     $name = $_POST['name'];
     $start_at = $_POST['start_at'];
     $end_at = $_POST['end_at'];
+    $event_detail = $_POST['event_detail'];
     
     $param = array(
       ':name' => $name,
       ':start_at' => $start_at,
       ':end_at' => $end_at,
+      ':event_detail' => $event_detail,
     );
   
     $stmt->execute($param);
   }catch (PDOException $e) {
     echo 'データベースにアクセスできません！'.$e->getMessage();
 }
-  
   } 
   
 ?>
@@ -64,6 +65,9 @@ if(!empty($_POST['name'])) {
     </div>
     <div>
       <p>終了時間<br><input type="datetime-local" name="end_at"></p>
+    </div>
+    <div>
+      <p>イベント内容<br><input type="text" name="event_detail"></p>
     </div>
     <div>
     <button type="submit" name="button">登録する</button>
