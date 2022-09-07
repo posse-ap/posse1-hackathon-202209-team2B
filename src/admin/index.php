@@ -1,5 +1,6 @@
 <?php
 // マネジメントアカウントかどうかを判定
+echo $_POST['user_id'];
 ?>
 
 <!DOCTYPE html>
