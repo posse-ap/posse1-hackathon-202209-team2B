@@ -73,23 +73,40 @@ function get_day_of_week($w)
 
         $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE status = :status');
         
+        if(isset($_POST["all"])){
+            $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id');
+        }
+        else{
+            if (isset($_POST["entry"])) {
+              $status = 1;
+              $stmt->bindValue(':status', $status);
+            } elseif (isset($_POST["not_entry"])) {
+              $status = 2;
+              $stmt->bindValue(':status', $status);
+            } elseif (isset($_POST["unanswered"])) {
+              $status = 0;
+              $stmt->bindValue(':status', $status);
+            }
+            // 全ての場合、statusに記入していないとAND以降がないものとして扱われる？
+            else {
+            }
+        }
         
-        if(isset($_POST["entry"])){
-          $status=1;
-          $stmt->bindValue(':status', $status);
-        }
-        elseif(isset($_POST["not_entry"])){
-            $status = 2;
-            $stmt->bindValue(':status', $status);
-        } 
-        elseif (isset($_POST["unanswered"])) {
-            $status = 0;
-            $stmt->bindValue(':status', $status);
-        } 
-        // 全ての場合、statusに記入していないとAND以降がないものとして扱われる？
-        else {
-          
-        }
+        // if(isset($_POST["entry"])){
+        //   $status=1;
+        //   $stmt->bindValue(':status', $status);
+        // }
+        // elseif(isset($_POST["not_entry"])){
+        //     $status = 2;
+        //     $stmt->bindValue(':status', $status);
+        // } 
+        // elseif (isset($_POST["unanswered"])) {
+        //     $status = 0;
+        //     $stmt->bindValue(':status', $status);
+        // } 
+        // // 全ての場合、statusに記入していないとAND以降がないものとして扱われる？
+        // else {
+        // }
         $stmt->execute();
         $events = $stmt->fetchAll();
         

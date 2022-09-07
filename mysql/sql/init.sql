@@ -62,4 +62,4 @@ INSERT INTO event_attendance SET event_id=1, user_id=2, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=3, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=2, status=1;
-INSERT INTO event_attendance SET event_id=2, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=2, user_id=3, status=0;
