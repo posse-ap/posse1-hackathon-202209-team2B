@@ -43,7 +43,8 @@ require('../dbconnect.php');
           $event_detail = $array['event_detail'];
           $body = <<<EOT
           {$name}さん
-          ${date}に${event}:${event_detail}を開催します。
+          ${date}に${event}を開催します。
+          説明：${event_detail}
           参加／不参加の回答をお願いします。
           http://localhost/
         EOT;
