@@ -39,7 +39,7 @@ CREATE TABLE event_attendance (
 INSERT INTO users SET name='石川朝香', email='asaka@posse.com', password=SHA("eddy");
 INSERT INTO users SET name='尾関なな海', email='nanami@posse.com', password=SHA("minn");
 
-INSERT INTO events SET name='縦モク', start_at='2021/08/01 21:00', end_at='2021/08/01 23:00';
+INSERT INTO events SET name='縦モク', start_at='2022/09/10 21:00', end_at='2022/09/10 23:00';
 INSERT INTO events SET name='横モク', start_at='2021/08/02 21:00', end_at='2021/08/02 23:00';
 INSERT INTO events SET name='スペモク', start_at='2021/08/03 20:00', end_at='2021/08/03 22:00';
 INSERT INTO events SET name='縦モク', start_at='2021/08/08 21:00', end_at='2021/08/08 23:00';
