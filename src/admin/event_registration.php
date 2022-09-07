@@ -1,15 +1,11 @@
 <?php
 session_start();
+require('../dbconnect.php');
 
 if(!empty($_POST['name'])) {
   try {
 
-    $stmt = $db->prepare(
-      'INSERT INTO events
-        (name, start_at, end_at)
-        VALUES
-        (:name, :start_at, :end_at)'
-      );
+    $stmt = $db->prepare('INSERT INTO events (name, start_at, end_at) VALUES (:name, :start_at, :end_at)');
   
     $name = $_POST['name'];
     $start_at = $_POST['start_at'];
