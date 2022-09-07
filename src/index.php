@@ -74,13 +74,51 @@ function get_day_of_week($w)
         <?php
 
 
-        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND status = :status');
+
+        // とりあえず１０ではなく２にしておく
+        define('MAX', '2');
+
+        // $count = $db->prepare('select count(id) as count from event_attendance where user_id = 1 AND status=1');
+        $count = $db->prepare('select count(id) as count from event_attendance ');
+        $count->execute();
+        // fetchallとfetchの違い
+        $total_count = $count->fetch(PDO::FETCH_ASSOC);
+        // print_r($total_count);
+        // print_r($total_count['count']);
+
+        $pages = ceil($total_count['count'] / MAX);
+        // print_r($pages);
+
+        // if (!isset($_GET['page_id'])) {
+        //   $now = 1;
+        // } else {
+        //   $now = $_GET['page_id'];
+        // }
+
+
 
         if (isset($_POST["all"])) {
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
           $user_id = $_SESSION["id"];
           $stmt->bindValue(':user_id', $user_id);
+          if (!isset($_GET['page_id'])) {
+            $now = 1;
+          } else {
+            $now = $_GET['page_id'];
+          }
+          $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+
+          // if ($now == 1) {
+          //   $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+          //   $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          // } else {
+          //   $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+          //   $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          // }
         } else {
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND status = :status');
+
           $user_id = $_SESSION["id"];
           $stmt->bindValue(':user_id', $user_id);
           if (isset($_POST["entry"])) {
@@ -140,6 +178,46 @@ function get_day_of_week($w)
       </div>
     </div>
   </main>
+
+  <?php
+  // とりあえず１０ではなく２にしておく
+  // define('MAX', '2');
+
+  // $count = $db->prepare('select count(id) as count from event_attendance where user_id = 1 AND status=1');
+  // $count = $db->prepare('select count(id) as count from event_attendance ');
+  // $count->execute();
+  // // fetchallとfetchの違い
+  // $total_count = $count->fetch(PDO::FETCH_ASSOC);
+  // // print_r($total_count);
+  // // print_r($total_count['count']);
+
+  //   $pages = ceil($total_count['count'] / MAX);
+  //   // print_r($pages);
+
+  //   if (!isset($_GET['page_id'])) {
+  //     $now = 1;
+  //   } else {
+  //     $now = $_GET['page_id'];
+  //   }
+
+
+
+
+  ?>
+
+  <div>
+    <?php
+    for ($n = 1; $n <= $pages; $n++) {
+      if ($n == $now) {
+        echo "<span style='padding: 5px;'>$now</span>";
+      } else {
+        echo "<a href='./index.php?page_id=$n' style='padding: 5px;'>$n</a>";
+      }
+    }
+    ?>
+  </div>
+
+
 
   <div class="modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
     <div class="modal-overlay absolute w-full h-full bg-black opacity-80"></div>
