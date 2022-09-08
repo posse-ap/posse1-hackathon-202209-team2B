@@ -3,7 +3,7 @@ require('dbconnect.php');
 
 
 session_start();
-if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 100000)) {
+if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10)) {
   session_unset();
   session_destroy();
   header("location: auth/login");
