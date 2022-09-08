@@ -15,10 +15,11 @@ if (isset($_SESSION['user_id']) && $_SESSION['time'] + 60 * 60 * 24 > time()) {
 
 if (!empty($_POST['name'])) {
   try {
-    $stmt = $db->prepare('INSERT INTO users (name, email, password, status) VALUES (:name, :email, :password, :status)');
+    $stmt = $db->prepare('INSERT INTO users (name, email, password, slack_id, status) VALUES (:name, :email, :password, :slack_id, :status)');
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = sha1($_POST['password']);
+    $slack_id = $_POST['slack_id'];
     $radio = $_POST['status'];
     if (isset($radio)) {
       $status = 1;
@@ -29,6 +30,7 @@ if (!empty($_POST['name'])) {
       ':name' => $name,
       ':email' => $email,
       ':password' => $password,
+      ':slack_id' => $slack_id,
       ':status' => $status,
     );
     $stmt->execute($param);
@@ -88,6 +90,9 @@ if (!empty($_POST['name'])) {
       </div>
       <div>
         <p>パスワード<br><input type="text" name="password"></p>
+      </div>
+      <div>
+        <p>SlackのユーザーID<br><input type="text" name="slack_id"></p>
       </div>
       <div>
         <p>管理者はチェックを入れてください<br><input type="radio" name="status"></p>
