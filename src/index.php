@@ -3,11 +3,12 @@ require('dbconnect.php');
 
 
 session_start();
-// セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
-if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10)) {
+  session_unset(); 
+  session_destroy(); 
   header("location: auth/login");
-  exit;
 }
+$_SESSION['start'] = time();
 
 // $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id where end_at >= now()  GROUP BY events.id');
 // $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = ?');
@@ -38,11 +39,11 @@ function get_day_of_week($w)
       <div class="h-full">
         <img src="img/header-logo.png" alt="" class="h-full">
       </div>
-      
       <div>
-        <a href="./admin/index.php" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理画面</a>
+        <form action="./admin/index.php" method="POST">
+          <button type="submit" value="<?php echo $_SESSION["id"];?>" name="user_id" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理者画面</button>
+        </form>
       </div>
-     
     </div>
   </header>
 

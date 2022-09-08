@@ -24,6 +24,11 @@ if(isset($_POST['new_password'])) {
       exit('データベースに接続できませんでした。' . $e->getMessage());
   }
 }
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
