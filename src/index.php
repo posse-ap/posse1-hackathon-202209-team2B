@@ -99,38 +99,56 @@ function get_day_of_week($w)
           $now = 1;
         } else {
           $now = $_GET['page_id'];
+          // 番号押されたら
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
+  
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if ($now == 1) {
+            $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          } else {
+            $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          }
+          $stmt->execute();
+          $events = $stmt->fetchAll();
+          // print_r($events);
         }
 
 
-        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
-
-        $user_id = $_SESSION["id"];
-        $stmt->bindValue(':user_id', $user_id);
-        if ($now == 1) {
-          $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
-          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
-        } else {
-          $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
-          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
-        }
-        $stmt->execute();
-        $events = $stmt->fetchAll();
-        print_r($events);
 
 
 
         if (isset($_POST["all"])) {
 
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ');
-          // $stmt->execute();
-          // $events = $stmt->fetchAll();
-          // print_r($events);
+          // 
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
+
           $user_id = $_SESSION["id"];
-          // echo "userのID:";
-          // print_r($user_id);
           $stmt->bindValue(':user_id', $user_id);
+          if ($now == 1) {
+            $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          } else {
+            $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          }
           $stmt->execute();
           $events = $stmt->fetchAll();
+          print_r($events);
+
+
+          // $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ');
+          // // $stmt->execute();
+          // // $events = $stmt->fetchAll();
+          // // print_r($events);
+          // $user_id = $_SESSION["id"];
+          // // echo "userのID:";
+          // // print_r($user_id);
+          // $stmt->bindValue(':user_id', $user_id);
+          // $stmt->execute();
+          // $events = $stmt->fetchAll();
           // $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
           // $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
 
@@ -142,23 +160,27 @@ function get_day_of_week($w)
           //   $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
           // }
         } else {
-          // $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND status = :status');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status');
 
-          // $user_id = $_SESSION["id"];
-          // $stmt->bindValue(':user_id', $user_id);
-          // if (isset($_POST["entry"])) {
-          //   $status = 1;
-          //   $stmt->bindValue(':status', $status);
-          // } elseif (isset($_POST["not_entry"])) {
-          //   $status = 2;
-          //   $stmt->bindValue(':status', $status);
-          // } elseif (isset($_POST["unanswered"])) {
-          //   $status = 0;
-          //   $stmt->bindValue(':status', $status);
-          // } else {
-          // }
-          // $stmt->execute();
-          // $events = $stmt->fetchAll();
+          $user_id = $_SESSION["id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if (isset($_POST["entry"])) {
+            $status = 1;
+            $stmt->bindValue(':status', $status);
+            $stmt->execute();
+            $events = $stmt->fetchAll();
+          } elseif (isset($_POST["not_entry"])) {
+            $status = 2;
+            $stmt->bindValue(':status', $status);
+            $stmt->execute();
+            $events = $stmt->fetchAll();
+          } elseif (isset($_POST["unanswered"])) {
+            $status = 0;
+            $stmt->bindValue(':status', $status);
+            $stmt->execute();
+            $events = $stmt->fetchAll();
+          } else {
+          }
         }
 
 
@@ -232,6 +254,8 @@ function get_day_of_week($w)
 
   <div>
     <?php
+
+    
     for ($n = 1; $n <= $pages; $n++) {
       if ($n == $now) {
         echo "<span style='padding: 5px;'>$now</span>";
