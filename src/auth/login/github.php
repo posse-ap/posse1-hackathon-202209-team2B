@@ -26,5 +26,26 @@ if (empty($_GET['code'])) {
 
   $res = curl_exec($curl);
   curl_close($curl);
-  echo $res;
+  // echo $res;
+
+  $start =  strpos($res, '=');
+  $finish =  strpos($res, '&');
+
+  $accessToken = substr($res, $start + 1, ($finish - $start - 1));
+
+
+  $url = 'https://api.github.com/user?access_token=' . $accessToken;
+
+  $ch = curl_init(); //開始
+
+  curl_setopt($ch, CURLOPT_URL, $url);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 証明書の検証を行わない
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // curl_execの結果を文字列で返す
+
+  $response =  curl_exec($ch);
+  $result = json_decode($response, true);
+
+  curl_close($ch); //終了
+  echo $ch;
 }
