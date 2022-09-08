@@ -6,7 +6,7 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
   $eventId = htmlspecialchars($_GET['eventId']);
   $userId = htmlspecialchars($_GET['userId']);
   try {
-    $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = ? and events.id = ?');
+    $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = ? and events.id = ?');
     $stmt->bindValue(1, $userId);
     $stmt->bindValue(2, $eventId);
     $stmt->execute();
