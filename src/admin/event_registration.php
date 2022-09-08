@@ -2,17 +2,17 @@
 session_start();
 require('../dbconnect.php');
 
-if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10)) {
-  session_unset();
-  session_destroy();
-  header("location: ../auth/login");
+if (isset($_SESSION['user_id']) && $_SESSION['time'] + 60 * 60 * 24 > time()) {
+  // SESSIONにuser_idカラムが設定されていて、SESSIONに登録されている時間から1日以内なら
+  $_SESSION['time'] = time();
+  // SESSIONの時間を現在時刻に更新
+  $login = $_SESSION['login'];  //ログイン情報を保持
+} else {
+  // そうじゃないならログイン画面に飛んでね
+  header('Location: ../auth/login');
+  exit();
 }
 
-// セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
-// if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-//   header("location: ../auth/login");
-//   exit;
-// }
 
 if (!empty($_POST['name'])) {
   try {

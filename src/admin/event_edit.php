@@ -1,5 +1,17 @@
 <?php
+session_start();
 require('../dbconnect.php');
+
+if (isset($_SESSION['user_id']) && $_SESSION['time'] + 60 * 60 * 24 > time()) {
+  // SESSIONにuser_idカラムが設定されていて、SESSIONに登録されている時間から1日以内なら
+  $_SESSION['time'] = time();
+  // SESSIONの時間を現在時刻に更新
+  $login = $_SESSION['login'];  //ログイン情報を保持
+} else {
+  // そうじゃないならログイン画面に飛んでね
+  header('Location: ../auth/login');
+  exit();
+}
 
 if (isset($_GET['id'])) {
   $id = htmlspecialchars($_GET['id']);
