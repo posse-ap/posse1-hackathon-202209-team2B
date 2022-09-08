@@ -40,7 +40,7 @@ CREATE TABLE event_attendance (
 
 INSERT INTO users SET name='石川朝香', email='asaka@posse.com', password=SHA("eddy"), slack_id='U041JKK755Y';
 INSERT INTO users SET name='遠藤愛期', email='manaki@posse.com', password=SHA("manaki"), slack_id='U041XECTJQH';
-INSERT INTO users SET name='平野隆二', email='tomo@posse.com', password=SHA("umeru"), status=1;
+INSERT INTO users SET name='平野隆二', email='tomo@posse.com', password=SHA("umeru"), status=1, slack_id='U041K71LBQT';
 
 INSERT INTO events SET name='縦モク', start_at='2022/09/12 21:00', end_at='2022/09/10 23:00', event_detail='いっしょに学ぼう';
 INSERT INTO events SET name='横モク', start_at='2022/09/09 21:00', end_at='2022/09/09 21:00', event_detail='いっしょに開発しよう';
