@@ -1,8 +1,4 @@
 # posse1-hackathon-202209-team2B
-<<<<<<< HEAD
-# slack-test
-# slack-test
-=======
 
 ## ハッカソン202109
 
