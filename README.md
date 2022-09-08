@@ -18,7 +18,7 @@ docker-compose up -d
 ### メール送信サンプルについて
 
 メール送信
-ブラウザで `http://localhost/mailtest.php` にアクセスしてください、テストメールが送信されます
+ブラウザで `http://localhost/api/sendMailToTarget` にアクセスしてください、テストメールが送信されます
 
 メール受信
 ブラウザで `http://localhost:8025/` にアクセスしてください、メールボックスが表示されます
