@@ -19,7 +19,7 @@ try {
 
     $three_days_after = date("Y-m-d", strtotime("+3 day"));
     if ($event_date == $three_days_after) {
-      $stmt = $db->prepare('SELECT users.name, users.email, event_attendance.status FROM event_attendance left join users on event_attendance.user_id = users.id right join events on event_attendance.event_id = events.id where event_attendance.status = 0 AND events.id = :event_id');
+      $stmt = $db->prepare('SELECT users.name, users.email, users.slack_id, event_attendance.status FROM event_attendance left join users on event_attendance.user_id = users.id right join events on event_attendance.event_id = events.id where event_attendance.status = 0 AND events.id = :event_id');
       $stmt->bindValue(':event_id', $array['id']);
       $stmt->execute();
       $participants = $stmt->fetchAll(pdo::FETCH_ASSOC); 
@@ -34,12 +34,12 @@ try {
         $date = $event_date;
         $event = $array['name'];
         $event_detail = $array['event_detail'];
-        $slack_id = 'U041JKK755Y';
+        $slack_id = $participant['slack_id'];
 
         $url = "https://hooks.slack.com/services/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";
         $message = [
           "channel" => "はっかそんだあ",
-          "text" => "<@${slack_id}>さん
+          "text" => "<@${slack_id}>${name}さん
           ${date}に${event}を開催します。
           説明：${event_detail}
           参加／不参加の回答をお願いします。
