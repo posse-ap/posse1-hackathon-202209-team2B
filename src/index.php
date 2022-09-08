@@ -105,9 +105,7 @@ function get_day_of_week($w)
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
           ?>
-
-
-          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
+          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="<?php echo $event['id']; ?>+<?php echo $_SESSION['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
               <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
