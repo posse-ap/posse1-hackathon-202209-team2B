@@ -3,7 +3,7 @@ require('dbconnect.php');
 
 
 session_start();
-if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10)) {
+if (isset($_SESSION['start']) && (time() - $_SESSION['start'] > 10000000)) {
   session_unset(); 
   session_destroy(); 
   header("location: auth/login");
@@ -77,7 +77,7 @@ function get_day_of_week($w)
 
 
         // とりあえず１０ではなく２にしておく
-        define('MAX', '1');
+        define('MAX', '2');
 
         // $count = $db->prepare('select count(id) as count from event_attendance where user_id = 1 AND status=1');
         $count = $db->prepare('select count(user_id) as count from event_attendance where user_id= :user_id');
@@ -102,7 +102,7 @@ function get_day_of_week($w)
         }
 
 
-        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
+        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
 
         $user_id = $_SESSION["id"];
         $stmt->bindValue(':user_id', $user_id);
@@ -121,7 +121,7 @@ function get_day_of_week($w)
 
         if (isset($_POST["all"])) {
 
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ');
           // $stmt->execute();
           // $events = $stmt->fetchAll();
           // print_r($events);

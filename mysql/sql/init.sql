@@ -46,8 +46,8 @@ INSERT INTO users SET name='ゆやまともはる', email='tomo@posse.com', pass
 INSERT INTO events SET name='縦モク', start_at='2022/09/12 21:00', end_at='2022/09/10 23:00', event_detail='いっしょに学ぼう';
 INSERT INTO events SET name='横モク', start_at='2022/09/09 21:00', end_at='2022/09/09 21:00', event_detail='いっしょに開発しよう';
 INSERT INTO events SET name='スペモク', start_at='2022/09/10 20:00', end_at='2022/09/10 20:00', event_detail='Mentorさんと学ぼう';
-INSERT INTO events SET name='縦モク', start_at='2021/08/08 21:00', end_at='2021/08/08 23:00', event_detail='先輩に聞こう';
-INSERT INTO events SET name='横モク', start_at='2021/08/09 21:00', end_at='2021/08/09 23:00', event_detail='課題進めよう';
+INSERT INTO events SET name='縦モク', start_at='2022/10/08 21:00', end_at='2022/10/08 23:00', event_detail='先輩に聞こう';
+INSERT INTO events SET name='横モク', start_at='2023/08/09 21:00', end_at='2023/08/09 23:00', event_detail='課題進めよう';
 INSERT INTO events SET name='スペモク', start_at='2021/08/10 20:00', end_at='2021/08/10 22:00', event_detail='スーさんとお友達になろう';
 INSERT INTO events SET name='縦モク', start_at='2021/08/15 21:00', end_at='2021/08/15 23:00', event_detail='先輩と仲良くなろう';
 INSERT INTO events SET name='横モク', start_at='2021/08/16 21:00', end_at='2021/08/16 23:00', event_detail='N予備見よう';
@@ -62,8 +62,16 @@ INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/
 
 INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=2, status=1;
-INSERT INTO event_attendance SET event_id=1, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=2, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=2, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=2, status=1;
-INSERT INTO event_attendance SET event_id=2, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=1, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=3, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=0;
 
