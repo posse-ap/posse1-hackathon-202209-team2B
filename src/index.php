@@ -45,7 +45,7 @@ function get_day_of_week($w)
       </div>
       <div>
         <form action="./admin/index.php" method="POST">
-          <button type="submit" value="<?php echo $_SESSION["id"]; ?>" name="user_id" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理者画面</button>
+          <button type="submit" value="<?php echo $_SESSION['user_id']; ?>" name="user_id" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">管理者画面</button>
         </form>
       </div>
     </div>
@@ -83,7 +83,7 @@ function get_day_of_week($w)
 
         // $count = $db->prepare('select count(id) as count from event_attendance where user_id = 1 AND status=1');
         $count = $db->prepare('select count(user_id) as count from event_attendance where user_id= :user_id');
-        $user_id = $_SESSION["id"];
+        $user_id = $_SESSION["user_id"];
         // print_r($user_id);
         $count->bindValue(':user_id', $user_id);
         $count->execute();
@@ -99,23 +99,38 @@ function get_day_of_week($w)
 
         if (!isset($_GET['page_id'])) {
           $now = 1;
+          // ページングのselect
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
+
+          $user_id = $_SESSION["user_id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if ($now == 1) {
+            $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          } else {
+            $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          }
+          $stmt->execute();
+          $events = $stmt->fetchAll();
         } else {
           $now = $_GET['page_id'];
-        }
-        // ページングのselect
-        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
+          // ページングのselect
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
 
-        $user_id = $_SESSION["id"];
-        $stmt->bindValue(':user_id', $user_id);
-        if ($now == 1) {
-          $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
-          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
-        } else {
-          $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
-          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          $user_id = $_SESSION["user_id"];
+          $stmt->bindValue(':user_id', $user_id);
+          if ($now == 1) {
+            $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          } else {
+            $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+          }
+          $stmt->execute();
+          $events = $stmt->fetchAll();
         }
-        $stmt->execute();
-        $events = $stmt->fetchAll();
+       
         // print_r($events);
 
 
@@ -126,7 +141,7 @@ function get_day_of_week($w)
           // 全てを押した場合のselect分（人だけで絞る）
           $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
 
-          $user_id = $_SESSION["id"];
+          $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
           if ($now == 1) {
             $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
@@ -144,7 +159,7 @@ function get_day_of_week($w)
           // // $stmt->execute();
           // // $events = $stmt->fetchAll();
           // // print_r($events);
-          // $user_id = $_SESSION["id"];
+          // $user_id = $_SESSION["user_id"];
           // // echo "userのID:";
           // // print_r($user_id);
           // $stmt->bindValue(':user_id', $user_id);
@@ -164,7 +179,7 @@ function get_day_of_week($w)
           // その他のボタンを押したときのselect分（人と参加状況で絞り込み）
           $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status ORDER BY events.start_at ASC');
 
-          $user_id = $_SESSION["id"];
+          $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
           if (isset($_POST["entry"])) {
             $status = 1;
@@ -193,7 +208,7 @@ function get_day_of_week($w)
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
           ?>
-          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="<?php echo $event['id']; ?>+<?php echo $_SESSION['id']; ?>">
+          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="<?php echo $event['id']; ?>+<?php echo $_SESSION['user_id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
               <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
