@@ -1,7 +1,7 @@
 <?php
 require('../dbconnect.php');
 
-if(!empty($_POST['name'])) {
+if (!empty($_POST['name'])) {
   try {
     $stmt = $db->prepare('INSERT INTO users (name, email, password, status) VALUES (:name, :email, :password, :status)');
     $name = $_POST['name'];
@@ -20,12 +20,35 @@ if(!empty($_POST['name'])) {
       ':status' => $status,
     );
     $stmt->execute($param);
-    echo "登録されました";
   } catch (PDOException $e) {
     echo 'データベースにアクセスできません！' . $e->getMessage();
   }
-}else {
-  echo 'yoooo';
+
+
+  try {
+    $stmt = $db->prepare('SELECT MAX(id) FROM users');
+    $stmt->execute();
+    $new_user = $stmt->fetch(pdo::FETCH_ASSOC);
+
+    // echo $new_user['MAX(id)'];
+
+    $stmt = $db->prepare('SELECT id, name FROM events');
+    $stmt->execute();
+    $events = $stmt->fetchAll(pdo::FETCH_ASSOC);
+
+    foreach ($events as $index => $event) {
+      $stmt = $db->prepare('INSERT INTO event_attendance (event_id, user_id) VALUES (:event_id, :user_id)');
+      $user_id = $new_user['MAX(id)'];
+      $event_id = $event['id'];
+      $param = array(
+        ':event_id' => $event_id,
+        ':user_id' => $user_id,
+      );
+      $stmt->execute($param);
+    }
+  } catch (PDOException $e) {
+    echo 'データベースにアクセスできません！' . $e->getMessage();
+  }
 }
 ?>
 
