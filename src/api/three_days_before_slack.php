@@ -39,7 +39,7 @@ try {
         $url = "https://hooks.slack.com/services/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";
         $message = [
           "channel" => "はっかそんだあ",
-          "text" => "<@${slack_id}>さん
+          "text" => "<@${slack_id}>${name}さん
           ${date}に${event}を開催します。
           説明：${event_detail}
           参加／不参加の回答をお願いします。
