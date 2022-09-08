@@ -36,7 +36,7 @@ try {
         $event_detail = $array['event_detail'];
         $slack_id = $participant['slack_id'];
 
-        $url = "https://hooks.slack.com/services/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";
+        $url = "https://hooks.slack.com/services/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";
         $message = [
           "channel" => "はっかそんだあ",
           "text" => "<@${slack_id}>${name}さん

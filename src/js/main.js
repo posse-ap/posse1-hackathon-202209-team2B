@@ -41,11 +41,84 @@ async function openModal(eventId, userId) {
       
       <p class="text-md">
       ${event.message}
+      
       </p>
       
       <hr class="my-4">
       
-      <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
+      <div class="accordion">
+        <div class="option">
+          <input type="checkbox" id="toggle1" class="toggle">
+          <label class="title" for="toggle1"> <p class="text-sm"><span class="text-xl">${event.sum}</span>人参加 ></p></label>
+          <div class="content">
+            <p>${event.member}</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <style>
+      .accordion {
+margin: 3em auto;
+max-width: 60vw;
+}
+.toggle {
+display: none;
+}
+.option {
+position: relative;
+margin-bottom: 1em;
+}
+.title,
+.content {
+-webkit-backface-visibility: hidden;
+backface-visibility: hidden;
+transform: translateZ(0);
+transition: all 0.3s;
+}
+.title {
+border: solid 1px #ccc;
+padding: 1em;
+display: block;
+color: #333;
+font-weight: bold;
+}
+.title::after,
+.title::before {
+content: "";
+position: absolute;
+right: 1.25em;
+top: 1.25em;
+width: 2px;
+height: 0.75em;
+background-color: #999;
+transition: all 0.3s;
+}
+.title::after {
+transform: rotate(90deg);
+}
+.content {
+max-height: 0;
+overflow: hidden;
+}
+.content p {
+margin: 0;
+padding: 0.5em 1em 1em;
+font-size: 0.9em;
+line-height: 1.5;
+}
+.toggle:checked + .title + .content {
+max-height: 500px;
+transition: all 1.5s;
+}
+.toggle:checked + .title::before {
+transform: rotate(90deg) !important;
+}
+      </style>
+
+
+
       `;
     console.log(event.status);
     switch (Number(event.status)) {
