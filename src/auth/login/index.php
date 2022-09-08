@@ -97,6 +97,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="text-center text-xs text-gray-400 mt-6">
         <a href="./forget_password.php">パスワードを忘れた方はこちら</a>
       </div>
+      <div class="text-center text-xs text-gray-400 mt-6">
+        <a href="https://github.com/login/oauth/authorize?client_id=1a1e4aa634e0d0d5d3c1">GitHubからログイン</a>
+      </div>
     </div>
   </main>
 </body>
