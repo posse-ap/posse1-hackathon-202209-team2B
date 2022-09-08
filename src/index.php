@@ -101,30 +101,29 @@ function get_day_of_week($w)
           $now = 1;
         } else {
           $now = $_GET['page_id'];
-          // 番号押されたら
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
-
-          $user_id = $_SESSION["id"];
-          $stmt->bindValue(':user_id', $user_id);
-          if ($now == 1) {
-            $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
-            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
-          } else {
-            $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
-            $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
-          }
-          $stmt->execute();
-          $events = $stmt->fetchAll();
-          // print_r($events);
         }
+        // ページングのselect
+        $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
 
+        $user_id = $_SESSION["id"];
+        $stmt->bindValue(':user_id', $user_id);
+        if ($now == 1) {
+          $stmt->bindValue(":start", $now - 1, PDO::PARAM_INT);
+          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+        } else {
+          $stmt->bindValue(":start", ($now - 1) * MAX, PDO::PARAM_INT);
+          $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+        $events = $stmt->fetchAll();
+        // print_r($events);
 
 
 
 
         if (isset($_POST["all"])) {
 
-          // 
+          // 全てを押した場合のselect分（人だけで絞る）
           $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
 
           $user_id = $_SESSION["id"];
@@ -162,6 +161,7 @@ function get_day_of_week($w)
           //   $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
           // }
         } else {
+          // その他のボタンを押したときのselect分（人と参加状況で絞り込み）
           $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status ORDER BY events.start_at ASC');
 
           $user_id = $_SESSION["id"];
@@ -203,19 +203,20 @@ function get_day_of_week($w)
             </div>
             <div class="flex flex-col justify-between text-right">
               <div>
-                <?php if ($event['id'] % 3 === 1) : ?>
-                  <!-- 
+                <?php if ($event['status'] == 1) : ?>
+          
+
+                  <p class="text-sm font-bold text-green-400">参加</p>
+                  
+                  <?php elseif ($event['status'] == 2) : ?>
+                    
+                    <p class="text-sm font-bold text-gray-300">不参加</p>
+
+                <?php elseif ($event['status'] == 0) : ?>
+
                   <p class="text-sm font-bold text-yellow-400">未回答</p>
                   <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
-                  -->
-                <?php elseif ($event['id'] % 3 === 2) : ?>
-                  <!-- 
-                  <p class="text-sm font-bold text-gray-300">不参加</p>
-                  -->
-                <?php else : ?>
-                  <!-- 
-                  <p class="text-sm font-bold text-green-400">参加</p>
-                  -->
+
                 <?php endif; ?>
               </div>
               <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加 ></p>
