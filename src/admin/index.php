@@ -1,6 +1,21 @@
 <?php
+require('../dbconnect.php');
 // マネジメントアカウントかどうかを判定
-echo $_POST['user_id'];
+$user_id = $_POST['user_id'];
+
+$stmt = $db->prepare('SELECT name, status from users where id = :id');
+$stmt->bindValue(':id', $user_id);
+$stmt->execute();
+$user = $stmt->fetch(pdo::FETCH_ASSOC);
+
+echo $user['status'];
+echo $user_id;
+
+if($user['status'] !== 1) {
+  echo "この画面は管理者専用なので表示できません";
+	exit ;
+}
+
 ?>
 
 <!DOCTYPE html>
