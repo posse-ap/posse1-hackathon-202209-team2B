@@ -18,13 +18,16 @@ require('../dbconnect.php');
 <header class="h-16">
     <div class="flex justify-between items-center w-full h-full mx-auto pl-2 pr-5">
       <div class="h-full">
-        <h1 class="h-full">ユーザー登録</h1>
+        <h1 class="w-full p-4 text-sm mb-3">ユーザー登録</h1>
       </div>
     </div>
   </header>
-  <form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" method="POST">
+  <form action="./event_registration.php" method="POST">
+    <input type="text" name="name" placeholder="ユーザーネーム" class="w-full p-4 text-sm mb-3">
     <input type="email" name="email" placeholder="メールアドレス" class="w-full p-4 text-sm mb-3">
     <input type="password" name="password" placeholder="パスワード" class="w-full p-4 text-sm mb-3">
+    <p class="w-full p-4 text-sm mb-3">管理者はチェックを入れてください</p>
+    <input type="radio" name="status" class="w-full p-4 text-sm mb-3">
     <label class="inline-block mb-6">
       <!-- <input type="checkbox" checked> -->
       <!-- <span class="text-sm">ログイン状態を保持する</span> -->
