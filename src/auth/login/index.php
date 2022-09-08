@@ -1,9 +1,7 @@
 <?php
-require ("../../dbconnect.php");
+require("../../dbconnect.php");
 
 session_start();
-
-
 // セッション変数 $_SESSION["loggedin"]を確認。ログイン済だったらウェルカムページへリダイレクト
 // if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
 //   header("location: ../../index.php");
@@ -36,12 +34,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     //パスワードがあっているか確認
     if (sha1($datas['password']) === $row['password']) {
-
       //セッション変数にログイン情報を格納
-      $_SESSION["loggedin"] = true;
-      $_SESSION["id"] = $row['id'];
+      $_SESSION['time'] = time();
+      $_SESSION["user_id"] = $row['id'];
       $_SESSION["name"] =  $row['name'];
-      header("location: ../../index.php");
+      header('Location: ../../index.php');
       exit();
     } else {
       $login_err = 'Invalid username or password.';
@@ -96,6 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </form>
       <div class="text-center text-xs text-gray-400 mt-6">
         <a href="./forget_password.php">パスワードを忘れた方はこちら</a>
+      </div>
+      <div class="text-center text-xs text-gray-400 mt-6">
+        <a href="https://github.com/login/oauth/authorize?client_id=1a1e4aa634e0d0d5d3c1">GitHubからログイン</a>
       </div>
     </div>
   </main>
