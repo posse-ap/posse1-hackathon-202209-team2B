@@ -3,6 +3,25 @@ session_start();
 require('dbconnect.php');
 
 
+
+
+
+
+$stmt_member = $db->prepare('SELECT users.name as name, event_attendance.event_id, event_attendance.status from event_attendance left join users on event_attendance.user_id = users.id where event_attendance.event_id= 1 AND event_attendance.status = 1');
+// $stmt_member->bindValue(':event_id', $eventId);
+$stmt_member->execute();
+// print_r($stmt_member);
+$event_member = $stmt_member->fetchAll(PDO::FETCH_ASSOC);
+// print_r($event_member);
+$join = [];
+foreach ($event_member as $member) {
+  // echo $member['name'];
+  array_push($join, $member['name']);
+}
+// print_r($join);
+
+
+
 if (isset($_SESSION['user_id']) && $_SESSION['time'] + 60 * 60 * 24 > time()) {
   // SESSIONにuser_idカラムが設定されていて、SESSIONに登録されている時間から1日以内なら
   $_SESSION['time'] = time();
@@ -130,7 +149,7 @@ function get_day_of_week($w)
           $stmt->execute();
           $events = $stmt->fetchAll();
         }
-       
+
         // print_r($events);
 
 
@@ -200,10 +219,16 @@ function get_day_of_week($w)
           }
         }
 
-
+        $stmt_sum = $db->prepare('SELECT count(*) as count from event_attendance left join users on event_attendance.user_id = users.id where event_attendance.event_id = :event_id AND event_attendance.status=1');
         ?>
         <?php foreach ($events as $event) : ?>
           <?php
+          $event_id = $event['id'];
+          $stmt_sum->bindValue(':event_id', $event_id);
+          $stmt_sum->execute();
+          $event_sum = $stmt_sum->fetch(PDO::FETCH_ASSOC);
+          // print_r($event_sum);
+
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
@@ -219,13 +244,13 @@ function get_day_of_week($w)
             <div class="flex flex-col justify-between text-right">
               <div>
                 <?php if ($event['status'] == 1) : ?>
-          
+
 
                   <p class="text-sm font-bold text-green-400">参加</p>
-                  
-                  <?php elseif ($event['status'] == 2) : ?>
-                    
-                    <p class="text-sm font-bold text-gray-300">不参加</p>
+
+                <?php elseif ($event['status'] == 2) : ?>
+
+                  <p class="text-sm font-bold text-gray-300">不参加</p>
 
                 <?php elseif ($event['status'] == 0) : ?>
 
@@ -234,7 +259,7 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加 ></p>
+              <p class="text-sm"><span class="text-xl"><?php echo $event_sum['count']; ?></span>人参加 ></p>
             </div>
           </div>
         <?php endforeach; ?>
