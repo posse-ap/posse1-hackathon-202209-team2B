@@ -29,8 +29,6 @@ if (isset($_POST['name'])) {
       $end_at = str_replace("T", " ", $_POST['end_at']) .":00";
       $event_detail = $_POST['event_detail'];
 
-      echo $event_detail;
-
       $sql = 'UPDATE events SET name = :name, start_at = :start_at, end_at = :end_at, event_detail = :event_detail WHERE id = :id';
       $stmt = $db->prepare($sql);
       $stmt->bindValue(":id", $id);
