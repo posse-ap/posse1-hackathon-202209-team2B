@@ -1,5 +1,5 @@
 <?php
-$url = "https://hooks.slack.com/services/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";
+$url = "https://hooks.slack.com/services/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";
 $message = [
   "channel" => "はっかそんだあ",
   "text" => "イ"
