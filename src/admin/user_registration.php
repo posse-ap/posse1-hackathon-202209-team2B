@@ -65,7 +65,7 @@ if (!empty($_POST['name'])) {
 <body>
   <main>
     <div>
-      <h1>イベント登録</h1>
+      <h1>ユーザー新規登録</h1>
     </div>
     <form action="./user_registration.php" method="post">
       <div>
