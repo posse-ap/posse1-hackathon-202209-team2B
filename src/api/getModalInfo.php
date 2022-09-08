@@ -37,9 +37,7 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
     echo $e->getMessage();
     exit();
   }
-// } else {
-//   echo "yo";
-// }
+}
 
 function get_day_of_week($w)
 {
