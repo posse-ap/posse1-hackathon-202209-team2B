@@ -3,14 +3,12 @@ require('../../dbconnect.php');
 
 if (isset($_GET['id'])) {
   $id = htmlspecialchars($_GET['id']);
-
   $stmt = $db->prepare('SELECT * FROM users WHERE id = ?');
   $stmt->execute(array($id));
   $applicant = $stmt->fetch(pdo::FETCH_ASSOC);
 }
 
 if(isset($_POST['new_password'])) {
-
   try {
       // 送信された値を取得
       $new_password = sha1($_POST['new_password']);

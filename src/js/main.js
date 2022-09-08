@@ -11,8 +11,10 @@ for (let i = 0; i < openModalClassList.length; i++) {
     "click",
     (e) => {
       e.preventDefault();
-      let eventId = parseInt(e.currentTarget.id.replace("event-", ""));
-      openModal(eventId);
+      let number = e.currentTarget.id.indexOf("+");
+      let eventId = e.currentTarget.id.substring(0, number);
+      let userId = e.currentTarget.id.substring(number + 1);
+      openModal(eventId, userId);
     },
     false
   );
@@ -24,55 +26,61 @@ for (var i = 0; i < closeModalClassList.length; i++) {
 
 overlay.addEventListener("click", closeModal);
 
-async function openModal(eventId) {
+async function openModal(eventId, userId) {
   try {
-    const url = "/api/getModalInfo.php?eventId=" + eventId;
+    const url =
+      "/api/getModalInfo.php?eventId=" + eventId + "&userId=" + userId;
     const res = await fetch(url);
     const event = await res.json();
     let modalHTML = `
-      <h2 class="text-md font-bold mb-3">${event.name}</h2>
+    <h2 class="text-md font-bold mb-3">${event.name}</h2>
       <p class="text-sm">${event.date}（${event.day_of_week}）</p>
       <p class="text-sm">${event.start_at} ~ ${event.end_at}</p>
 
       <hr class="my-4">
-
+      
       <p class="text-md">
-        ${event.message}
+      ${event.message}
       </p>
-
+      
       <hr class="my-4">
-
+      
       <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
-    `;
-    switch (0) {
+      `;
+    console.log(event.status);
+    switch (Number(event.status)) {
       case 0:
         modalHTML += `
           <div class="text-center mt-6">
-            <!--
             <p class="text-lg font-bold text-yellow-400">未回答</p>
             <p class="text-xs text-yellow-400">期限 ${event.deadline}</p>
-            -->
           </div>
           <div class="flex mt-5">
-            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
-            <!-- 
-            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加しない</button>
-            -->
-          </div>
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 1)">参加する</button>
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 2)">参加しない</button>
+        </div>
         `;
         break;
       case 1:
         modalHTML += `
           <div class="text-center mt-10">
-            <p class="text-xl font-bold text-gray-300">不参加</p>
+            <p class="text-xl font-bold text-green-300">参加</p>
           </div>
+          <div class="flex mt-5">
+          <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加する</button>
+          <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 2)">参加しない</button>
+        </div>
         `;
         break;
       case 2:
         modalHTML += `
           <div class="text-center mt-10">
-            <p class="text-xl font-bold text-green-400">参加</p>
+            <p class="text-xl font-bold text-gray-400">不参加</p>
           </div>
+          <div class="flex mt-5">
+            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId}, ${userId}, 1)">参加する</button>
+            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold">参加しない</button>
+        </div>
         `;
         break;
     }
@@ -94,10 +102,12 @@ function toggleModal() {
   body.classList.toggle("modal-active");
 }
 
-async function participateEvent(eventId) {
+async function participateEvent(eventId, userId, status) {
   try {
     let formData = new FormData();
     formData.append("eventId", eventId);
+    formData.append("userId", userId);
+    formData.append("status", status);
     const url = "/api/postEventAttendance.php";
     await fetch(url, {
       method: "POST",
