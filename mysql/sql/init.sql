@@ -59,7 +59,7 @@ INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/
 INSERT INTO events SET name='裁判傍聴', start_at='2022/09/09 18:00', end_at='2022/09/09 22:00', event_detail='松本の願い';
 INSERT INTO events SET name='サバリディズニー', start_at='2022/09/10 18:00', end_at='2022/09/10 22:00', event_detail='老若合同激アツ！';
 INSERT INTO events SET name='残9スノボ', start_at='2022/09/11 18:00', end_at='2022/09/11 22:00', event_detail='参加必須だよ。';
-INSERT INTO events SET name='釣り', start_at='2022/09/12 18:00', end_at='2022/09129 22:00', event_detail='お店ちゃんとやってるか確認して';
+INSERT INTO events SET name='釣り', start_at='2022/09/12 18:00', end_at='2022/09/12 22:00', event_detail='お店ちゃんとやってるか確認して';
 INSERT INTO events SET name='めしもく', start_at='2022/09/13 18:00', end_at='2022/09/13 22:00', event_detail='復活！！！！';
 INSERT INTO events SET name='巻き返し合宿', start_at='2022/09/14 18:00', end_at='2022/09/14 22:00', event_detail='留年阻止！';
 INSERT INTO events SET name='フェーズ末試験', start_at='2022/09/15 18:00', end_at='2022/09/15 22:00', event_detail='みんな勉強してる？？';
