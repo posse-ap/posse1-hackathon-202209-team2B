@@ -25,7 +25,7 @@ if($user['status'] != 1) {
 </head>
 <body>
   <nav>
-    <a href="./user_regitation.php">ユーザー登録</a>
+    <a href="./user_registration.php">ユーザー登録</a>
     <a href="./event_registration.php">イベント登録</a>
     <a href="./event_list.php">イベント一覧</a>
     <a href="./event_edit.php">イベント編集</a>
