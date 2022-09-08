@@ -11,6 +11,15 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
     $stmt->bindValue(2, $eventId);
     $stmt->execute();
     $event = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $stmt_sum = $db->prepare('SELECT count(*) as count from event_attendance left join users on event_attendance.user_id = users.id where event_attendance.event_id = :event_id AND event_attendance.status=1;');
+    $stmt_sum->bindValue(':event_id', $eventId);
+    $stmt_sum->execute();
+    $event_sum = $stmt_sum->fetch(PDO::FETCH_ASSOC);
+    // print_r($event_sum);
+
+    // select users.name, event_attendance.event_id, event_attendance.status from event_attendance left join users on event_attendance.user_id = users.id where event_attendance.event_id=1 AND event_attendance.status = 1
+
     
     $start_date = strtotime($event['start_at']);
     $end_date = strtotime($event['end_at']);
@@ -29,6 +38,7 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
       'status' => $event['status'],
+      'sum' => $event_sum['count'],
       'deadline' => date("m月d日", strtotime('-3 day', $end_date)),
       'userId' => $userId,
     ];

@@ -41,11 +41,18 @@ async function openModal(eventId, userId) {
       
       <p class="text-md">
       ${event.message}
+      
       </p>
       
       <hr class="my-4">
       
-      <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
+
+
+      <p class="text-sm"><span class="text-xl">${event.sum}</span>人参加 ></p>
+
+
+
+
       `;
     console.log(event.status);
     switch (Number(event.status)) {
