@@ -18,7 +18,7 @@ foreach ($event_member as $member) {
   // echo $member['name'];
   array_push($join, $member['name']);
 }
-print_r($join);
+// print_r($join);
 
 
 
