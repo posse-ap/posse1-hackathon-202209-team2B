@@ -75,7 +75,7 @@ INSERT INTO events SET name='アルティメット', start_at='2022/09/23 18:00'
 INSERT INTO events SET name='冬のDX', start_at='2022/09/24 18:00', end_at='2022/09/24 22:00', event_detail='彼女ができたら、ちょっと行けるか分からないです';
 INSERT INTO events SET name='初日の出', start_at='2022/09/25 18:00', end_at='2022/09/25 22:00', event_detail='ゆくとしくるとし！';
 
-INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=1, user_id=2, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=3, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
@@ -123,15 +123,15 @@ INSERT INTO event_attendance SET event_id=15, user_id=3, status=0;
 INSERT INTO event_attendance SET event_id=16, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=16, user_id=2, status=0;
 INSERT INTO event_attendance SET event_id=16, user_id=3, status=1;
-INSERT INTO event_attendance SET event_id=17, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=17, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=17, user_id=2, status=0;
-INSERT INTO event_attendance SET event_id=17, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=17, user_id=3, status=2;
 INSERT INTO event_attendance SET event_id=18, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=18, user_id=2, status=0;
 INSERT INTO event_attendance SET event_id=18, user_id=3, status=1;
-INSERT INTO event_attendance SET event_id=19, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=19, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=19, user_id=2, status=0;
-INSERT INTO event_attendance SET event_id=19, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=19, user_id=3, status=1;
 INSERT INTO event_attendance SET event_id=20, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=20, user_id=2, status=0;
 INSERT INTO event_attendance SET event_id=20, user_id=3, status=0;
