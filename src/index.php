@@ -77,7 +77,7 @@ function get_day_of_week($w)
 
 
         // とりあえず１０ではなく２にしておく
-        define('MAX', '2');
+        define('MAX', '10');
 
         // $count = $db->prepare('select count(id) as count from event_attendance where user_id = 1 AND status=1');
         $count = $db->prepare('select count(user_id) as count from event_attendance where user_id= :user_id');
@@ -100,7 +100,7 @@ function get_day_of_week($w)
         } else {
           $now = $_GET['page_id'];
           // 番号押されたら
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
   
           $user_id = $_SESSION["id"];
           $stmt->bindValue(':user_id', $user_id);
@@ -123,7 +123,7 @@ function get_day_of_week($w)
         if (isset($_POST["all"])) {
 
           // 
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id LIMIT :start, :max');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ORDER BY events.start_at ASC LIMIT :start, :max');
 
           $user_id = $_SESSION["id"];
           $stmt->bindValue(':user_id', $user_id);
@@ -136,7 +136,7 @@ function get_day_of_week($w)
           }
           $stmt->execute();
           $events = $stmt->fetchAll();
-          print_r($events);
+          // print_r($events);
 
 
           // $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id ');
@@ -160,7 +160,7 @@ function get_day_of_week($w)
           //   $stmt->bindValue(":max", MAX, PDO::PARAM_INT);
           // }
         } else {
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status ORDER BY events.start_at ASC');
 
           $user_id = $_SESSION["id"];
           $stmt->bindValue(':user_id', $user_id);
