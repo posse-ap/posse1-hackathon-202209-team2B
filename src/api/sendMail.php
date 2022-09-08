@@ -51,7 +51,7 @@ require('../dbconnect.php');
         EOT;
 
           mb_send_mail($to, $subject, $body, $headers);
-          echo "未記入者にリマインドメールを送信しました";
+          echo "全メンバーに3日前リマインドメールを送信しました";
         }
       }
     }
@@ -110,7 +110,7 @@ require('../dbconnect.php');
         EOT;
 
           mb_send_mail($to, $subject, $body, $headers);
-          echo "参加者にリマインドメールを送信しました";
+          echo "全メンバーに前日リマインドメールを送信しました";
         }
       }
     }
