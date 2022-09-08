@@ -2,7 +2,6 @@
 require('../dbconnect.php');
 header('Content-Type: application/json; charset=UTF-8');
 
-
 if (isset($_GET['eventId']) && isset($_GET['userId'])) {
   $eventId = htmlspecialchars($_GET['eventId']);
   $userId = htmlspecialchars($_GET['userId']);
@@ -15,9 +14,11 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
     
     $start_date = strtotime($event['start_at']);
     $end_date = strtotime($event['end_at']);
+    // 日時を表記用の形に変更している
 
     $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("H:i", $start_date) . '~' . date("H:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
-
+    // メッセージ内容の指定
+    
     $array = [
       'id' => $event['id'],
       'name' => $event['name'],
@@ -31,15 +32,18 @@ if (isset($_GET['eventId']) && isset($_GET['userId'])) {
       'deadline' => date("m月d日", strtotime('-3 day', $end_date)),
       'userId' => $userId,
     ];
-    
     echo json_encode($array, JSON_UNESCAPED_UNICODE);
-  } catch(PDOException $e) {
+  } catch (PDOException $e) {
     echo $e->getMessage();
     exit();
   }
-}
+// } else {
+//   echo "yo";
+// }
 
-function get_day_of_week ($w) {
+function get_day_of_week($w)
+{
   $day_of_week_list = ['日', '月', '火', '水', '木', '金', '土'];
   return $day_of_week_list["$w"];
 }
+
