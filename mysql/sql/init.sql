@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   name VARCHAR(10) NOT NULL,
-  email  VARCHAR(16) COLLATE utf8_bin,
+  email  VARCHAR(255) COLLATE utf8_bin,
   password VARCHAR(255) NOT NULL,
   status TINYINT(1) NOT NULL DEFAULT '0',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -31,17 +31,15 @@ CREATE TABLE event_attendance (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   event_id INT NOT NULL,
   user_id INT NOT NULL,
-  status INT NOT NULL,
+  status INT NOT NULL DEFAULT '0',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at DATETIME
 );
 
-
 INSERT INTO users SET name='石川朝香', email='asaka@posse.com', password=SHA("eddy");
 INSERT INTO users SET name='尾関なな海', email='nanami@posse.com', password=SHA("minn");
 INSERT INTO users SET name='ゆやまともはる', email='tomo@posse.com', password=SHA("umeru"), status=1;
-
 
 INSERT INTO events SET name='縦モク', start_at='2022/09/12 21:00', end_at='2022/09/10 23:00', event_detail='いっしょに学ぼう';
 INSERT INTO events SET name='横モク', start_at='2022/09/09 21:00', end_at='2022/09/09 21:00', event_detail='いっしょに開発しよう';
@@ -59,8 +57,7 @@ INSERT INTO events SET name='遊び', start_at='2021/09/22 18:00', end_at='2021/
 INSERT INTO events SET name='ハッカソン', start_at='2021/09/03 10:00', end_at='2021/09/03 22:00', event_detail='優勝する！';
 INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/09/06 22:00', event_detail='中華街行く？笑';
 
-
-INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status=0;
 INSERT INTO event_attendance SET event_id=1, user_id=2, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
@@ -71,7 +68,45 @@ INSERT INTO event_attendance SET event_id=1, user_id=1, status=1;
 INSERT INTO event_attendance SET event_id=1, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=1, status=2;
 INSERT INTO event_attendance SET event_id=2, user_id=2, status=1;
-INSERT INTO event_attendance SET event_id=1, user_id=3, status=0;
-INSERT INTO event_attendance SET event_id=3, user_id=1, status=0;
-INSERT INTO event_attendance SET event_id=1, user_id=1, status=0;
+
+INSERT INTO event_attendance SET event_id=2, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=3, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=3, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=3, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=4, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=4, user_id=2, status=0;
+INSERT INTO event_attendance SET event_id=4, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=5, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=5, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=5, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=6, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=6, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=6, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=7, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=7, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=7, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=8, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=8, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=8, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=9, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=9, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=9, user_id=3, status=0;
+INSERT INTO event_attendance SET event_id=10, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=10, user_id=2, status=2;
+INSERT INTO event_attendance SET event_id=10, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=11, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=11, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=11, user_id=3, status=2;
+INSERT INTO event_attendance SET event_id=12, user_id=1, status=2;
+INSERT INTO event_attendance SET event_id=12, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=12, user_id=3, status=1;
+INSERT INTO event_attendance SET event_id=13, user_id=1, status=1;
+INSERT INTO event_attendance SET event_id=13, user_id=2, status=2;
+INSERT INTO event_attendance SET event_id=13, user_id=3, status=1;
+INSERT INTO event_attendance SET event_id=14, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=14, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=14, user_id=3, status=1;
+INSERT INTO event_attendance SET event_id=15, user_id=1, status=0;
+INSERT INTO event_attendance SET event_id=15, user_id=2, status=1;
+INSERT INTO event_attendance SET event_id=15, user_id=3, status=0;
 
