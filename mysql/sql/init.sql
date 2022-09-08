@@ -8,6 +8,7 @@ CREATE TABLE users (
   name VARCHAR(10) NOT NULL,
   email  VARCHAR(16) COLLATE utf8_bin,
   password VARCHAR(255) NOT NULL,
+  status TINYINT(1) NOT NULL DEFAULT '0',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at DATETIME
@@ -39,6 +40,7 @@ CREATE TABLE event_attendance (
 
 INSERT INTO users SET name='石川朝香', email='asaka@posse.com', password=SHA("eddy");
 INSERT INTO users SET name='尾関なな海', email='nanami@posse.com', password=SHA("minn");
+INSERT INTO users SET name='ゆやまともはる', email='tomo@posse.com', password=SHA("umeru"), status=1;
 
 
 INSERT INTO events SET name='縦モク', start_at='2022/09/12 21:00', end_at='2022/09/10 23:00', event_detail='いっしょに学ぼう';
