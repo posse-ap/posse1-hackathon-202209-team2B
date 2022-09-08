@@ -100,7 +100,7 @@ function get_day_of_week($w)
         if (!isset($_GET['page_id'])) {
           $now = 1;
           // ページングのselect
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id as user_id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
 
           $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
@@ -116,7 +116,7 @@ function get_day_of_week($w)
         } else {
           $now = $_GET['page_id'];
           // ページングのselect
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id as user_id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
 
           $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
@@ -139,7 +139,7 @@ function get_day_of_week($w)
         if (isset($_POST["all"])) {
 
           // 全てを押した場合のselect分（人だけで絞る）
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id as user_id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND events.end_at >= now() ORDER BY events.start_at ASC LIMIT :start, :max');
 
           $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
@@ -177,7 +177,7 @@ function get_day_of_week($w)
           // }
         } else {
           // その他のボタンを押したときのselect分（人と参加状況で絞り込み）
-          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status AND events.end_at >= now() ORDER BY events.start_at ASC');
+          $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, users.id as user_id, event_attendance.status FROM event_attendance LEFT JOIN users ON event_attendance.user_id=users.id RIGHT JOIN events ON event_attendance.event_id=events.id WHERE users.id = :user_id AND event_attendance.status = :status AND events.end_at >= now() ORDER BY events.start_at ASC');
 
           $user_id = $_SESSION["user_id"];
           $stmt->bindValue(':user_id', $user_id);
